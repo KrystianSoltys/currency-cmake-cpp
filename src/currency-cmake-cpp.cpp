@@ -1,12 +1,21 @@
-﻿#define CURL_STATICLIB
+﻿
 
 #include <iostream>
-#include "curl/curl.h"
+#include "reader.hpp"
+#include <locale>
 
-int main()
+auto main(int argc, char** argv) -> int
 {
-	curl_httppost XD;
+	std::string cd = "USD";
 
-	std::cout << "CMake linking works unexpectedly v2" << std::endl;
+	auto map = GetCurrencies({ GetLink(cd, Date("10", "03", "2022")) });
+
+	
+	std::cout << cd << ": " << map.at(cd).name << " - " << map.at(cd).price << " PLN\n";
+
+	std::cin.get();
+	
+
 	return 0;
 }
+
