@@ -4,18 +4,17 @@
 #include <unordered_map>
 #include <string>
 
+
 struct CurrencyConteiner
 {
-	CurrencyConteiner(std::string _name, std::string _price)
-		: name(_name), price(_price) {}
-	std::string name;
+	CurrencyConteiner(std::string _date, std::string _price)
+		: date(_date), price(_price) {}
+	std::string date;
 	std::string price;
 };
 
 struct Date
-{
-	using uint = std::uint8_t;
-	
+{	
 	Date(std::string d, std::string m, std::string y)
 		: day(d), month(m), year(y) {}
 

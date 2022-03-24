@@ -14,6 +14,8 @@ public:
 private:
 	int argc;
 	char** argv;
+
+	auto checkDate() -> bool;
 };
 
 
