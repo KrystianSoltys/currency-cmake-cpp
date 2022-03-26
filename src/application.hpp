@@ -11,11 +11,24 @@ public:
 	Application(int c, char** v);
 	auto exec() -> int;
 
+	struct Args
+	{
+		std::string base;
+		std::string date;
+		std::vector<std::string> dest;
+	};
+	enum class ParsingStatus { OK, Help, WrongArg, MissingVal, UnknownArg};
+
 private:
 	int argc;
 	char** argv;
 
-	auto checkDate() -> bool;
+	Args args;
+
+	auto parseArgv() -> std::pair<ParsingStatus, std::string>;
+
+	
+	//auto checkDate() -> bool;
 };
 
 

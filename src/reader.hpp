@@ -7,8 +7,10 @@
 
 struct CurrencyConteiner
 {
-	CurrencyConteiner(std::string _date, std::string _price)
-		: date(_date), price(_price) {}
+	CurrencyConteiner(std::string _base, std::string _date, std::string _price)
+		: base(_base), date(_date), price(_price) {}
+
+	std::string base;
 	std::string date;
 	std::string price;
 };
@@ -26,8 +28,10 @@ struct Date
 std::string
 GetLink(std::string code, Date date = Date("", "", ""));
 
-std::unordered_map<std::string, CurrencyConteiner>			//<currency code, other info> --> ex. <"USD", {"US Dollar", 4.24}>
+std::vector<CurrencyConteiner>
 GetCurrencies(const std::vector<std::string>& links);
+
+
 
 std::string
 ParseFromWeb(const std::string& link);

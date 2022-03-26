@@ -16,10 +16,10 @@ std::string GetLink(std::string code, Date date)
 	return "http://api.nbp.pl/api/exchangerates/rates/A/" + code + "/" + dt + "?format=xml";
 }
 
-std::unordered_map<std::string, CurrencyConteiner>
+std::vector<CurrencyConteiner>
 GetCurrencies(const std::vector<std::string>& links)
 {
-	std::unordered_map<std::string, CurrencyConteiner> currencyMap;
+	std::vector<CurrencyConteiner> currencyMap;
 
 	std::uint32_t datePos=0, codePos=0, strPricePos=0;
 	std::string xmlData, date, code, strPrice;
@@ -37,7 +37,7 @@ GetCurrencies(const std::vector<std::string>& links)
 		datePos = xmlData.find("<EffectiveDate>");
 		date = xmlData.substr(datePos + 15, 10);
 
-		currencyMap.insert(std::pair <std::string, CurrencyConteiner>(code, CurrencyConteiner(date, strPrice)));
+		currencyMap.push_back((CurrencyConteiner(code, date, strPrice)));
 	}
 
 

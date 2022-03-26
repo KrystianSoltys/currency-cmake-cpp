@@ -1,6 +1,5 @@
 #include "application.hpp"
 
-
 Application::Application(int c, char** v)
 	: argc(c), argv(v)
 {
@@ -8,45 +7,107 @@ Application::Application(int c, char** v)
 
 auto Application::exec() -> int
 {
-	std::vector<std::string> linksVec;
-	
-	std::string d, m, y;
+	using std::cout; using std::endl;
 
-	bool isDateSet = checkDate();
-	std::uint16_t len = (isDateSet ? argc - 1 : argc);
-
-	if (isDateSet)
+	UI ui;
+	cout << "\n";
+	if (argc < 2)
 	{
-		std::string dateStr = argv[argc - 1];
-		d = dateStr.substr(0, 2);
-		m = dateStr.substr(3, 2);
-		y = dateStr.substr(6, 4);
-	}
-
-	for (std::uint16_t i = 1; i < len; i++)
-	{
-		linksVec.push_back(GetLink(argv[i], Date(d, m, y)));
+		cout <<  ui.About() << "\n";
+		return EXIT_SUCCESS;
 	}
 	
-	auto map = GetCurrencies(linksVec);
+	auto parsePair = parseArgv();
 
-	for (std::uint16_t i = 1; i < len; i++)
+
+	switch (parsePair.first)
 	{
-		std::cout << argv[i] << ": " << map.at(argv[i]).price << "\t" << map.at(argv[i]).date << std::endl;
+		case ParsingStatus::OK:
+		{
+			cout << ui.About() << "\n"; //todo
+			break;
+		}
+		case ParsingStatus::Help:
+		{
+			cout << ui.Help() << "\n";
+			break;
+		}
+		case ParsingStatus::MissingVal:
+		{
+			cout << ui.MissingVal(parsePair.second) << "\n";
+			break;
+		}
+		case ParsingStatus::WrongArg:
+		{
+			//todo
+			cout << "Wrong arg provided.\n\n";
+			break;
+		}
+		case ParsingStatus::UnknownArg:
+		{
+			cout << ui.UnknownArg(parsePair.second) << "\n";
+			break;
+		}
+
+		default:
+		{
+			cout << ui.UnknownError() << "\n";
+			return EXIT_FAILURE;
+		}
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
-auto Application::checkDate() -> bool
+
+
+
+auto Application::parseArgv() -> std::pair<ParsingStatus, std::string>
 {
-	std::string lastArg =argv[argc-1];
+	using parsingPair =  std::pair<ParsingStatus, std::string>;
 
-	if (lastArg.size() == 10 &&
-		lastArg[2] == '-' &&
-		lastArg[5] == '-')
-		return true;
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "--help")) //strcmp returns 0 on success
+		{
+			return parsingPair(ParsingStatus::Help, "");
+		}
+		else if (!strcmp(argv[i], "-d"))
+		{
+			if (i + 1 >= argc)return parsingPair(ParsingStatus::MissingVal, "-d");
+			args.date = argv[++i];
+		}
+		else if (!strcmp(argv[i], "-b"))
+		{
+			if (i + 1 >= argc)return parsingPair(ParsingStatus::MissingVal, "-b");
+			args.base = argv[++i];
+		}
+		else if (!strcmp(argv[i], "-c"))
+		{
+			while (++i < argc && argv[i][0] != '-')
+			{
+				args.dest.push_back(argv[i]);
+			}
+			if (i < argc) --i;
+		}
+		else
+		{
+			return parsingPair(ParsingStatus::UnknownArg, argv[i]);
+		}
+	}
 
-
-	return false;
+	return parsingPair(ParsingStatus::OK, "");
 }
+//
+//auto Application::checkDate() -> bool
+//{
+//	std::string lastArg =argv[argc-1];
+//
+//	if (lastArg.size() == 10 &&
+//		lastArg[2] == '-' &&
+//		lastArg[5] == '-')
+//		return true;
+//
+//
+//	return false;
+//}
