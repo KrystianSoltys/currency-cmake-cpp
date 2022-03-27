@@ -4,6 +4,7 @@
 #include "ui.hpp"
 #include "reader.hpp"
 #include <iostream>
+#include <algorithm>
 
 class Application
 {
@@ -15,9 +16,9 @@ public:
 	{
 		std::string base;
 		std::string date;
-		std::vector<std::string> dest;
+		std::vector<std::string> targets;
 	};
-	enum class ParsingStatus { OK, Help, WrongArg, MissingVal, UnknownArg};
+	enum class ParsingStatus { OK, Help, About, WrongVal, MissingVal, NoTargetCurrencies, UnknownArg };
 
 private:
 	int argc;
@@ -26,7 +27,7 @@ private:
 	Args args;
 
 	auto parseArgv() -> std::pair<ParsingStatus, std::string>;
-
+	auto convert() const-> std::string;
 	
 	//auto checkDate() -> bool;
 };

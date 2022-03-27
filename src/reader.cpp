@@ -7,41 +7,53 @@ size_t WriteCallback(char* contents, size_t size, size_t nmemb, void* userp)
 	return size * nmemb;
 }
 
-std::string GetLink(std::string code, Date date)
+std::string GetLink(std::string code, std::string date, std::string target)
 {
-	std::string dt;
-	if (!date.day.empty() && !date.month.empty() && !date.year.empty())
-		dt = date.year + "-" + date.month + "-" + date.day + "/";
+	std::string toReturn = "http://api.exchangerate.host/";
+	
+	if (date.empty()) date = "latest";
+	toReturn += date;
 
-	return "http://api.nbp.pl/api/exchangerates/rates/A/" + code + "/" + dt + "?format=xml";
+	if (code.empty()) code = DEFAULT_BASE_CURRENCY_CODE;
+	toReturn += "?symbols=" + code;
+
+	toReturn += "&base=" + target;
+
+	toReturn += "&format=xml";
+
+	return toReturn;
 }
 
 std::vector<CurrencyConteiner>
 GetCurrencies(const std::vector<std::string>& links)
 {
-	std::vector<CurrencyConteiner> currencyMap;
+	std::vector<CurrencyConteiner> currencyVec;
 
-	std::uint32_t datePos=0, codePos=0, strPricePos=0;
-	std::string xmlData, date, code, strPrice;
+	std::uint16_t datePos=0, codePos=0, strPricePos=0, targPos=0;
+	std::string xmlData, date, code, strPrice, targ;
 
 	for (auto& i : links)
 	{
 		xmlData = ParseFromWeb(i);
 
-		strPricePos = xmlData.find("<Mid>");
-		strPrice = xmlData.substr(strPricePos+5, 6);
+		strPricePos = xmlData.find("<rate>");
+		strPrice = xmlData.substr(strPricePos+6, 5);
 		
-		codePos = xmlData.find("<Code>");
+		codePos = xmlData.find("<base>");
 		code = xmlData.substr(codePos + 6, 3);
 
-		datePos = xmlData.find("<EffectiveDate>");
-		date = xmlData.substr(datePos + 15, 10);
+		datePos = xmlData.find("<date>");
+		date = xmlData.substr(datePos + 6, 10);
 
-		currencyMap.push_back((CurrencyConteiner(code, date, strPrice)));
+		targPos = xmlData.find("<code>");
+		targ = xmlData.substr(targPos + 6, 3);
+
+
+		currencyVec.push_back((CurrencyConteiner(code, date, strPrice, targ)));
 	}
 
-
-	return currencyMap;
+	
+	return currencyVec;
 }
 
 std::string ParseFromWeb(const std::string& link)

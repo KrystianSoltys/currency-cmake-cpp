@@ -22,21 +22,21 @@ auto UI::setLang() -> void
 auto UI::Headline() const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return "---------------Konwerter Walut " + INFO::VERSION + "---------------\n";
+		return "--------------- Konwerter Walut " + INFO::VERSION + " ---------------\n";
 
 	
-	return ("---------------Currency Converter " + INFO::VERSION + "---------------\n");
+	return ("--------------- Currency Converter " + INFO::VERSION + " ---------------\n");
 }
 
 auto UI::About() const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Przelicznik walut na PLN, przy uzyciu API Narodowego Banku Polskiego\n"
+		return ("Przelicznik walut wykonany, przy uzyciu API exchangerate.host\n"
 				"Projekt zrealizowany w celu nauki jezyka C++ i systemu CMake, autor: Krystian Soltys(2022)\n"
 				"github.com/KrystianSoltys\n");
 
 
-	return ("Currency costs to PLN getter via NPB (The National Bank of Poland) API\n"
+	return ("Currency costs converter, made using exchangerate.host API\n"
 			"C++ and CMake learning project made by Krystian Soltys(2022)\n"
 			"github.com/KrystianSoltys\n");
 }
@@ -44,22 +44,26 @@ auto UI::About() const noexcept -> std::string
 auto UI::Help() const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Przelicznik walut na PLN, przy uzyciu API Narodowego Banku Polskiego\n"
+		return ("Przelicznik walut wykonany, przy uzyciu API exchangerate.host\n"
 				"Dostepne argumenty:\n"
-				"-c -> waluty docelowe, np. [-c USD EUR CHF]\n"
+				"-t -> waluty docelowe, np. [-t USD EUR CHF] (WYMAGANE)\n"
 				"-b -> waluta podstawowa (domyslnie PLN), np. [-b PLN]\n"
-				"-d -> data cen walut (domyslnie dzis), np. [-d 26-03-2022]\n\n"
+				"-d -> data cen walut (domyslnie dzis), np. [-d RRRR-MM-DD]\n"
+				"--help -> ta wiadomosc\n"
+				"--about -> informcaje i autor\n\n"
 				"Przyklad uzycia:\n"
-				"currency -c USD CAD CZK -b EUR -d 01-03-2022\n");
+				"currency -t USD CAD CZK -b EUR -d 2022-03-01\n");
 
 
-	return ("Currency costs to PLN getter via NPB (The National Bank of Poland) API\n"
+	return ("Currency costs converter, made using exchangerate.host API\n"
 			"Avaible arguments:\n"
-			"-c -> target currencies, ex. [-c USD EUR CHF]\n"
+			"-t -> target currencies, ex. [-t USD EUR CHF] (REQUIRED)\n"
 			"-b -> base currency (default PLN), ex. [-b PLN]\n"
-			"-d -> date of currency prices (defalut today), ex. [-d 26-03-2022]\n\n"
+			"-d -> date of currency prices (defalut today), ex. [-d YYYY-MM-DD]\n"
+			"--help -> this message\n"
+			"--about -> credits\n\n"
 			"Example of use:\n"
-			"currency -c USD CAD CZK -b EUR -d 01-03-2022\n");
+			"currency -t USD CAD CZK -b EUR -d 2022-03-01\n");
 }
 
 auto UI::MissingVal(std::string arg) const noexcept -> std::string
@@ -71,13 +75,30 @@ auto UI::MissingVal(std::string arg) const noexcept -> std::string
 	return ("Missing argument value: \"" + arg + "\"\n");
 }
 
+auto UI::WrongVal(std::string val) const noexcept -> std::string
+{
+	if (lang == Language::Polish)
+		return ("Nieprawidlowa wartosc argumentu: \"" + val + "\"\n");
+
+
+	return ("Incorrect argument value: \"" + val + "\"\n");
+}
+
+auto UI::NoTargetCurrencies() const noexcept -> std::string
+{
+	if (lang == Language::Polish)
+		return ("Nie podano walut docelowych (uzyj argumentu --help).\n");
+
+	return ("No target currencies provided (use --help argument for more inforamtion).\n");
+}
+
 
 auto UI::UnknownArg(std::string arg) const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Nieznany argument: " + arg + "\n");
+		return ("Nieznany argument: \"" + arg + "\"\n");
 
-	return ("Unknown argument: " + arg + "\n");
+	return ("Unknown argument: \"" + arg + "\"\n");
 }
 
 auto UI::UnknownError() const noexcept -> std::string

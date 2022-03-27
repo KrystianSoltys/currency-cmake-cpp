@@ -24,7 +24,8 @@ auto Application::exec() -> int
 	{
 		case ParsingStatus::OK:
 		{
-			cout << ui.About() << "\n"; //todo
+			cout << ui.Headline() << "\n";
+			cout << convert() << "\n";
 			break;
 		}
 		case ParsingStatus::Help:
@@ -32,15 +33,24 @@ auto Application::exec() -> int
 			cout << ui.Help() << "\n";
 			break;
 		}
+		case ParsingStatus::About:
+		{
+			cout << ui.About() << "\n";
+			break;
+		}
+		case ParsingStatus::WrongVal:
+		{
+			cout << ui.WrongVal(parsePair.second) << "\n";
+			break;
+		}
 		case ParsingStatus::MissingVal:
 		{
 			cout << ui.MissingVal(parsePair.second) << "\n";
 			break;
 		}
-		case ParsingStatus::WrongArg:
+		case ParsingStatus::NoTargetCurrencies:
 		{
-			//todo
-			cout << "Wrong arg provided.\n\n";
+			cout << ui.NoTargetCurrencies() << "\n";
 			break;
 		}
 		case ParsingStatus::UnknownArg:
@@ -82,11 +92,11 @@ auto Application::parseArgv() -> std::pair<ParsingStatus, std::string>
 			if (i + 1 >= argc)return parsingPair(ParsingStatus::MissingVal, "-b");
 			args.base = argv[++i];
 		}
-		else if (!strcmp(argv[i], "-c"))
+		else if (!strcmp(argv[i], "-t"))
 		{
 			while (++i < argc && argv[i][0] != '-')
 			{
-				args.dest.push_back(argv[i]);
+				args.targets.push_back(argv[i]);
 			}
 			if (i < argc) --i;
 		}
@@ -96,18 +106,53 @@ auto Application::parseArgv() -> std::pair<ParsingStatus, std::string>
 		}
 	}
 
+	//date check
+	if (!args.date.empty())
+	{
+		if (args.date.size() != 10 ||
+			args.date[4] != '-' ||
+			args.date[7] != '-')
+			return parsingPair(ParsingStatus::WrongVal, args.date);
+	}
+	
+
+	//base check
+	if (!args.base.empty())
+	{
+		if (args.base.size() != 3) return parsingPair(ParsingStatus::WrongVal, args.base);
+	}
+	
+	//dest check
+	if (args.targets.empty()) return parsingPair(ParsingStatus::NoTargetCurrencies, "");
+	else
+	{
+		for (auto i : args.targets)
+		{
+			if (i.size() != 3) return parsingPair(ParsingStatus::WrongVal, i);;
+		}
+	}
+	
+	
+
 	return parsingPair(ParsingStatus::OK, "");
 }
-//
-//auto Application::checkDate() -> bool
-//{
-//	std::string lastArg =argv[argc-1];
-//
-//	if (lastArg.size() == 10 &&
-//		lastArg[2] == '-' &&
-//		lastArg[5] == '-')
-//		return true;
-//
-//
-//	return false;
-//}
+auto Application::convert() const -> std::string
+{
+	std::vector<std::string> links;
+
+	for (auto& i : args.targets)
+	{
+		links.push_back(GetLink(args.base, args.date, i));
+	}
+
+	auto resultVec = GetCurrencies(links);
+
+	std::string toReturn;
+
+	for (auto& i : resultVec)
+	{
+		toReturn += "1 " + i.base + " = " + i.price + " " + i.targ + "\t(" + i.date + ")\n";
+	}
+
+	return toReturn;
+}

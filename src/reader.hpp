@@ -4,29 +4,22 @@
 #include <unordered_map>
 #include <string>
 
+const std::string DEFAULT_BASE_CURRENCY_CODE = "PLN";
 
 struct CurrencyConteiner
 {
-	CurrencyConteiner(std::string _base, std::string _date, std::string _price)
-		: base(_base), date(_date), price(_price) {}
+	CurrencyConteiner(std::string _base, std::string _date, std::string _price, std::string _targ)
+		: base(_base), date(_date), price(_price), targ(_targ) {}
 
 	std::string base;
 	std::string date;
 	std::string price;
+	std::string targ;
 };
 
-struct Date
-{	
-	Date(std::string d, std::string m, std::string y)
-		: day(d), month(m), year(y) {}
-
-	std::string day;
-	std::string month;
-	std::string year;
-};
 
 std::string
-GetLink(std::string code, Date date = Date("", "", ""));
+GetLink(std::string code, std::string date, std::string target);
 
 std::vector<CurrencyConteiner>
 GetCurrencies(const std::vector<std::string>& links);
