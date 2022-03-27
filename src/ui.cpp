@@ -50,7 +50,7 @@ auto UI::Help() const noexcept -> std::string
 				"-b -> waluta podstawowa (domyslnie PLN), np. [-b PLN]\n"
 				"-d -> data cen walut (domyslnie dzis), np. [-d RRRR-MM-DD]\n"
 				"--help -> ta wiadomosc\n"
-				"--about -> informcaje i autor\n\n"
+				"--about -> informacje i autor\n\n"
 				"Przyklad uzycia:\n"
 				"currency -t USD CAD CZK -b EUR -d 2022-03-01\n");
 

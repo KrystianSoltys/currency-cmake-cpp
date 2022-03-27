@@ -82,6 +82,10 @@ auto Application::parseArgv() -> std::pair<ParsingStatus, std::string>
 		{
 			return parsingPair(ParsingStatus::Help, "");
 		}
+		else if (!strcmp(argv[i], "--about"))
+		{
+			return parsingPair(ParsingStatus::About, "");
+		}
 		else if (!strcmp(argv[i], "-d"))
 		{
 			if (i + 1 >= argc)return parsingPair(ParsingStatus::MissingVal, "-d");

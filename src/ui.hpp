@@ -8,7 +8,7 @@
 
 namespace INFO
 {
-	static std::string VERSION = "v1.0"; //static is temp fix
+	static std::string VERSION = "v1.1"; //static is temp fix
 }
 
 
