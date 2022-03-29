@@ -5,6 +5,7 @@
 #include "reader.hpp"
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 class Application
 {
@@ -27,7 +28,7 @@ private:
 	Args args;
 
 	auto parseArgv() -> std::pair<ParsingStatus, std::string>;
-	auto convert() const-> std::string;
+	auto convert() const -> std::string;
 	
 	//auto checkDate() -> bool;
 };

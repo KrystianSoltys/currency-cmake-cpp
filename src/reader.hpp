@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 const std::string DEFAULT_BASE_CURRENCY_CODE = "PLN";
 

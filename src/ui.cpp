@@ -59,7 +59,7 @@ auto UI::Help() const noexcept -> std::string
 			"Avaible arguments:\n"
 			"-t -> target currencies, ex. [-t USD EUR CHF] (REQUIRED)\n"
 			"-b -> base currency (default PLN), ex. [-b PLN]\n"
-			"-d -> date of currency prices (defalut today), ex. [-d YYYY-MM-DD]\n"
+			"-d -> date of currency prices (default today), ex. [-d YYYY-MM-DD]\n"
 			"--help -> this message\n"
 			"--about -> credits\n\n"
 			"Example of use:\n"
@@ -69,19 +69,19 @@ auto UI::Help() const noexcept -> std::string
 auto UI::MissingVal(std::string arg) const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Brakujaca wartosc argumentu: \"" + arg + "\"\n");
+		return ("Brakujaca wartosc argumentu: \"" + arg + "\" (uzyj argumentu --help).\n");
 
 
-	return ("Missing argument value: \"" + arg + "\"\n");
+	return ("Missing argument value: \"" + arg + "\" (use --help argument for more inforamtion).\n");
 }
 
 auto UI::WrongVal(std::string val) const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Nieprawidlowa wartosc argumentu: \"" + val + "\"\n");
+		return ("Nieprawidlowa wartosc argumentu: \"" + val + "\" (uzyj argumentu --help).\n");
 
 
-	return ("Incorrect argument value: \"" + val + "\"\n");
+	return ("Incorrect argument value: \"" + val + "\" (use --help argument for more inforamtion).\n");
 }
 
 auto UI::NoTargetCurrencies() const noexcept -> std::string
@@ -96,9 +96,9 @@ auto UI::NoTargetCurrencies() const noexcept -> std::string
 auto UI::UnknownArg(std::string arg) const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return ("Nieznany argument: \"" + arg + "\"\n");
+		return ("Nieznany argument: \"" + arg + "\" (uzyj argumentu --help).\n");
 
-	return ("Unknown argument: \"" + arg + "\"\n");
+	return ("Unknown argument: \"" + arg + "\" (use --help argument for more inforamtion).\n");
 }
 
 auto UI::UnknownError() const noexcept -> std::string
