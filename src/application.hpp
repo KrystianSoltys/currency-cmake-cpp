@@ -5,6 +5,7 @@
 #include "reader.hpp"
 #include <iostream>
 #include <algorithm>
+#include <cstring>
 #include <vector>
 
 class Application
