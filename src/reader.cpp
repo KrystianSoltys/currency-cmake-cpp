@@ -29,7 +29,7 @@ GetCurrencies(const std::vector<std::string>& links)
 {
 	std::vector<CurrencyConteiner> currencyVec;
 
-	std::uint16_t datePos=0, codePos=0, strPricePos=0, targPos=0;
+	std::uint64_t datePos=0, codePos=0, strPricePos=0, targPos=0;
 	std::string xmlData, date, code, strPrice, targ;
 
 	for (auto& i : links)

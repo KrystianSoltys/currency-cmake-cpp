@@ -8,6 +8,10 @@ include_directories("${PROJECT_SOURCE_DIR}/lib/curl/include")
 
 add_executable (currency "main.cpp" "reader.hpp" "reader.cpp" "application.hpp" "application.cpp" "ui.hpp" "ui.cpp")
 
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif()
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_link_libraries(currency "${PROJECT_SOURCE_DIR}/lib/curl/GCC/${CMAKE_BUILD_TYPE}/libcurl.a" wldap32 crypt32 Ws2_32)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
