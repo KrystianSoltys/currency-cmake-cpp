@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-const std::string DEFAULT_BASE_CURRENCY_CODE = "PLN";
+constexpr const char* DEFAULT_BASE_CURRENCY_CODE = "PLN";
 
 struct CurrencyConteiner
 {
@@ -24,8 +24,6 @@ GetLink(std::string code, std::string date, std::string target);
 
 std::vector<CurrencyConteiner>
 GetCurrencies(const std::vector<std::string>& links);
-
-
 
 std::string
 ParseFromWeb(const std::string& link);

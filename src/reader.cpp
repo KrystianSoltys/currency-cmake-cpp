@@ -1,9 +1,9 @@
 #include "reader.hpp"
 #include <curl/curl.h>
 
-size_t WriteCallback(char* contents, size_t size, size_t nmemb, void* userp)
+size_t WriteCallback(char* ptr, size_t size, size_t nmemb, void* userdata)
 {
-	((std::string*)userp)->append((char*)contents, size * nmemb);
+	((std::string*)userdata)->append((char*)ptr, size * nmemb);
 	return size * nmemb;
 }
 

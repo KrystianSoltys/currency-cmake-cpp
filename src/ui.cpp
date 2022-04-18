@@ -22,10 +22,10 @@ auto UI::setLang() -> void
 auto UI::Headline() const noexcept -> std::string
 {
 	if (lang == Language::Polish)
-		return "--------------- Konwerter Walut " + INFO::VERSION + " ---------------\n";
+		return "--------------- Konwerter Walut " + std::string(INFO::VERSION) + " ---------------\n";
 
 	
-	return ("--------------- Currency Converter " + INFO::VERSION + " ---------------\n");
+	return ("--------------- Currency Converter " + std::string(INFO::VERSION) + " ---------------\n");
 }
 
 auto UI::About() const noexcept -> std::string
